@@ -1,0 +1,14 @@
+fixer:
+  serviceUrl: https://api.apilayer.com/fixer/
+  apiKey: rvefDUsKX51dKIQlkPK0By057GfKlasT
+
+
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      username: ahmet
+      password: p_ahmet
+      database: ahmet-conversion-history
+      port: 27017
+      host: ${DATASOURCE_HOST:localhost}

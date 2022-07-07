@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  app:
+    container_name: ReadingIsGood_docker
+    image: reading-is-good-colak
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo-db
+    networks:
+      - ahmet-test-network
+    environment:
+      DATASOURCE_HOST: mongo-db
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ahmet
+      MONGO_INITDB_ROOT_PASSWORD: p_ahmet
+      MONGO_INITDB_DATABASE: ahmet-conversion-history
+    networks:
+      - ahmet-test-network
+networks:
+  ahmet-test-network:
