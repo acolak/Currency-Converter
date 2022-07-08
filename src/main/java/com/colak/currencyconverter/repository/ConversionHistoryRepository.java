@@ -1,5 +1,6 @@
 package com.colak.currencyconverter.repository;
 
+import com.colak.currencyconverter.exception.RepositoryException;
 import com.colak.currencyconverter.repository.entity.ConversionHistory;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.scheduling.annotation.Async;
@@ -14,9 +15,9 @@ import java.util.Optional;
 public interface ConversionHistoryRepository extends MongoRepository<ConversionHistory, String> {
 
 	@Async
-	<S extends ConversionHistory> S save(S entity);
+	<S extends ConversionHistory> S save(S entity) throws RepositoryException;
 
-	Optional<List<ConversionHistory>> findAllByCreateDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+	Optional<List<ConversionHistory>> findAllByCreateDateBetween(LocalDateTime startDate, LocalDateTime endDate) throws RepositoryException;
 
-	List<ConversionHistory> findAllByConversionHistoryId(String transactionId);
+	List<ConversionHistory> findAllByConversionHistoryId(String transactionId) throws RepositoryException;
 }

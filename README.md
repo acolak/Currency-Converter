@@ -29,7 +29,7 @@ This project consist of simple Currency Converter project that have below featur
 
 first clone or download project then
 
-`cd currency-converter--main`
+`cd currency_converter-main`
 
 ### 1.2 How to Run
 Run **runProject.sh** file in root directory
@@ -42,7 +42,7 @@ Run **runProject.sh** file in root directory
 
 Run tests
 ```
-$ cd currency-converter-main
+$ cd currency_converter-main
 $ mvn test
 ```
 

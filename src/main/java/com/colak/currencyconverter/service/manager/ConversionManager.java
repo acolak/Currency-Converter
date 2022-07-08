@@ -1,6 +1,8 @@
 package com.colak.currencyconverter.service.manager;
 
 import com.colak.currencyconverter.controller.dto.ConvertCurrencyResponseDTO;
+import com.colak.currencyconverter.exception.ErrorBody;
+import com.colak.currencyconverter.exception.RepositoryException;
 import com.colak.currencyconverter.mapper.ConversionCurrencyMapper;
 import com.colak.currencyconverter.repository.ConversionHistoryRepository;
 import com.colak.currencyconverter.repository.entity.ConversionHistory;
@@ -24,7 +26,7 @@ public class ConversionManager {
 	private final ConversionHistoryRepository conversionHistoryRepository;
 	private final ConversionCurrencyMapper conversionCurrencyMapper;
 
-	public ConvertCurrencyResponseDTO convertCurrencyAndSaveHistory(String amount,String fromCurrency, List<String> toCurrencyList) {
+	public ConvertCurrencyResponseDTO convertCurrencyAndSaveHistory(String amount, String fromCurrency, List<String> toCurrencyList) {
 
 		ConvertCurrencyResponseDTO convertCurrencyResponseDTO = new ConvertCurrencyResponseDTO();
 
@@ -45,24 +47,32 @@ public class ConversionManager {
 
 	public void saveConversionHistory(List<ConvertCurrencyResponse> convertCurrencyResponseList, String transactionId, String fromCurrency, List<String> toCurrencyList) {
 
-		ConversionHistory.ConversionHistoryBuilder conversionHistoryBuilder = ConversionHistory.builder();
-		conversionHistoryBuilder.conversionHistoryId(transactionId)
-				.calculatedAmount(convertCurrencyResponseList)
-				.conversionHistoryId(transactionId)
-				.sourceCurrency(fromCurrency)
-				.targetCurrency(toCurrencyList);
+		try {
+			ConversionHistory.ConversionHistoryBuilder conversionHistoryBuilder = ConversionHistory.builder();
+			conversionHistoryBuilder.conversionHistoryId(transactionId)
+					.calculatedAmount(convertCurrencyResponseList)
+					.conversionHistoryId(transactionId)
+					.sourceCurrency(fromCurrency)
+					.targetCurrency(toCurrencyList);
 
-		conversionHistoryRepository.save(conversionHistoryBuilder.build());
+			conversionHistoryRepository.save(conversionHistoryBuilder.build());
+		} catch (Exception e) {
+			throw new RepositoryException(new ErrorBody(101, e.getMessage()));
+		}
 	}
 
 	public List<ConversionHistory> getConversionHistory(String transactionId, LocalDateTime startDate, LocalDateTime endDate) {
 
-		if(transactionId != null) {
-			return conversionHistoryRepository.findAllByConversionHistoryId(transactionId);
-		} else if(startDate != null && endDate != null) {
-			return conversionHistoryRepository.findAllByCreateDateBetween(startDate,endDate).orElseGet(null);
-		} else {
-			return conversionHistoryRepository.findAll();
+		try {
+			if (transactionId != null) {
+				return conversionHistoryRepository.findAllByConversionHistoryId(transactionId);
+			} else if (startDate != null && endDate != null) {
+				return conversionHistoryRepository.findAllByCreateDateBetween(startDate, endDate).orElseGet(null);
+			} else {
+				return conversionHistoryRepository.findAll();
+			}
+		} catch (Exception e) {
+			throw new RepositoryException(new ErrorBody(101, e.getMessage()));
 		}
 	}
 
