@@ -1,7 +1,7 @@
 package com.colak.currencyconverter.service.fixer;
 
-import com.colak.currencyconverter.service.model.ConvertQueryResponse;
-import com.colak.currencyconverter.service.model.ExchangeRateListResponse;
+import com.colak.currencyconverter.service.model.ConvertCurrencyResponse;
+import com.colak.currencyconverter.service.model.ExchangeRateResponse;
 import com.colak.currencyconverter.service.rate.RateProviderService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -31,7 +31,7 @@ public class FixerRateService implements RateProviderService {
 	private String apiKey;
 
 	@Override
-	public ExchangeRateListResponse getExchangeRateList(String currency, List<String> targetList) {
+	public ExchangeRateResponse getExchangeRateList(String currency, List<String> targetList) {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -47,11 +47,11 @@ public class FixerRateService implements RateProviderService {
 		ResponseEntity<Map> response = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, entity, Map.class);
 		Map<String, Double> rates = (Map<String, Double>) response.getBody().get("rates");
 
-		return new ExchangeRateListResponse(rates);
+		return new ExchangeRateResponse(rates);
 	}
 
 	@Override
-	public ConvertQueryResponse convertCurrency(String sourceAmount, String sourceCurrency, String targetCurrency) {
+	public ConvertCurrencyResponse convertCurrency(String sourceAmount, String sourceCurrency, String targetCurrency) {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -68,7 +68,7 @@ public class FixerRateService implements RateProviderService {
 		ResponseEntity<Map> response  = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, entity, Map.class);
 		Double result = (Double) response.getBody().get("result");
 
-		return new ConvertQueryResponse(result);
+		return new ConvertCurrencyResponse(result, sourceCurrency, targetCurrency, sourceAmount);
 
 	}
 }

@@ -1,13 +1,16 @@
 package com.colak.currencyconverter.service.manager;
 
+import com.colak.currencyconverter.controller.dto.ConvertCurrencyResponseDTO;
+import com.colak.currencyconverter.mapper.ConversionCurrencyMapper;
 import com.colak.currencyconverter.repository.ConversionHistoryRepository;
 import com.colak.currencyconverter.repository.entity.ConversionHistory;
-import com.colak.currencyconverter.service.model.ConvertQueryResponse;
+import com.colak.currencyconverter.service.model.ConvertCurrencyResponse;
 import com.colak.currencyconverter.service.rate.RateProviderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,32 +22,52 @@ public class ConversionManager {
 
 	private final RateProviderService rateProviderService;
 	private final ConversionHistoryRepository conversionHistoryRepository;
+	private final ConversionCurrencyMapper conversionCurrencyMapper;
 
-	public ConvertQueryResponse convertCurrency(String fromCurrency, String toCurrency, String amount) {
+	public ConvertCurrencyResponseDTO convertCurrencyAndSaveHistory(String amount,String fromCurrency, List<String> toCurrencyList) {
 
-		Double rate = rateProviderService.convertCurrency(amount, fromCurrency, toCurrency).getResult();
+		ConvertCurrencyResponseDTO convertCurrencyResponseDTO = new ConvertCurrencyResponseDTO();
 
-		ConversionHistory conversionHistory = new ConversionHistory();
-		conversionHistory.setConversionHistoryId(fromCurrency + toCurrency);
-		conversionHistory.setSourceCurrency(fromCurrency);
-		conversionHistory.setTargetCurrency(toCurrency);
-		conversionHistory.setCalculatedAmount(String.valueOf(rate));
-		conversionHistory.setSourceAmount(amount);
-		conversionHistoryRepository.save(conversionHistory);
+		List<ConvertCurrencyResponse> convertCurrencyResponseList = new ArrayList<>();
 
+		toCurrencyList.forEach(toCurrency -> {
+			convertCurrencyResponseList.add(rateProviderService.convertCurrency(amount, fromCurrency, toCurrency));
+		});
 
-		return new ConvertQueryResponse(rate); //TODO convertto dto
+		String transactionId = generateTransactionId();
+		convertCurrencyResponseDTO.setConvertedCurrencyList(conversionCurrencyMapper.toConvertedCurrencyDTO(convertCurrencyResponseList));
+		convertCurrencyResponseDTO.setTransactionId(transactionId);
+
+		saveConversionHistory(convertCurrencyResponseList, transactionId, fromCurrency, toCurrencyList);
+
+		return convertCurrencyResponseDTO;
 	}
 
-	public List<ConversionHistory> getConversionHistory(String transactionId, String startDate, String endDate) {
+	public void saveConversionHistory(List<ConvertCurrencyResponse> convertCurrencyResponseList, String transactionId, String fromCurrency, List<String> toCurrencyList) {
+
+		ConversionHistory.ConversionHistoryBuilder conversionHistoryBuilder = ConversionHistory.builder();
+		conversionHistoryBuilder.conversionHistoryId(transactionId)
+				.calculatedAmount(convertCurrencyResponseList)
+				.conversionHistoryId(transactionId)
+				.sourceCurrency(fromCurrency)
+				.targetCurrency(toCurrencyList);
+
+		conversionHistoryRepository.save(conversionHistoryBuilder.build());
+	}
+
+	public List<ConversionHistory> getConversionHistory(String transactionId, LocalDateTime startDate, LocalDateTime endDate) {
 
 		if(transactionId != null) {
 			return conversionHistoryRepository.findAllByConversionHistoryId(transactionId);
 		} else if(startDate != null && endDate != null) {
-			return conversionHistoryRepository.findAllByCreateDateBetween(LocalDateTime.parse(startDate), LocalDateTime.parse(endDate)).orElseGet(null);
+			return conversionHistoryRepository.findAllByCreateDateBetween(startDate,endDate).orElseGet(null);
 		} else {
 			return conversionHistoryRepository.findAll();
 		}
-
 	}
+
+	private String generateTransactionId() {
+		return String.valueOf(System.currentTimeMillis());
+	}
+
 }

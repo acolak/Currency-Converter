@@ -1,4 +1,4 @@
-## ExchangeAPI Project - Ahmet Colak
+## ExchangeAPI Project
 This project consist of simple Currency Converter project that have below features:
 
 - Get Currency Exchange Rates
@@ -17,6 +17,7 @@ This project consist of simple Currency Converter project that have below featur
     - Spring Data Web
 - MongoDB
 - Docker
+- Mapstruct
 - SpringDoc OpenApi
 - Lombok
 - Maven
@@ -50,7 +51,10 @@ $ mvn test
 #### Sample Requests:  #####
 http://localhost:8080/exchange-api/get-exchange-rate-list/TRY/EUR,USD,BRL
 
-http://localhost:8080/exchange-api/convert-currency/12/EUR/TRY
+http://localhost:8080/exchange-api/convert-currency/12/EUR/TRY,USD,BRL
+
+http://localhost:8080/exchange-api/get-conversion-history?startDate=2022-07-09T00:01:00.00&endDate=2022-07-08T23:59:00.00
+http://localhost:8080/exchange-api/get-conversion-history?transactionId=5e9f8f8f-9f8f-9f8f-9f8f-9f8f8f8f8f8f
 
 
 #### Swagger (You can also test api via swagger in browser)

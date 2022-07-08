@@ -2,7 +2,7 @@ version: '3.9'
 services:
   app:
     container_name: ReadingIsGood_docker
-    image: reading-is-good-colak
+    image: acolak/currency-converter
     build: ./
     ports:
       - "8080:8080"

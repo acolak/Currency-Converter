@@ -1,7 +1,7 @@
 package com.colak.currencyconverter.service.rate;
 
-import com.colak.currencyconverter.service.model.ConvertQueryResponse;
-import com.colak.currencyconverter.service.model.ExchangeRateListResponse;
+import com.colak.currencyconverter.service.model.ConvertCurrencyResponse;
+import com.colak.currencyconverter.service.model.ExchangeRateResponse;
 
 import java.util.List;
 
@@ -10,8 +10,7 @@ import java.util.List;
  **/
 public interface RateProviderService {
 
+	ExchangeRateResponse getExchangeRateList(String currency, List<String> targetList);
 
-	ExchangeRateListResponse getExchangeRateList(String currency, List<String> targetList);
-
-	ConvertQueryResponse convertCurrency(String sourceAmount, String sourceCurrency, String targetCurrency);
+	ConvertCurrencyResponse convertCurrency(String sourceAmount, String sourceCurrency, String targetCurrency);
 }

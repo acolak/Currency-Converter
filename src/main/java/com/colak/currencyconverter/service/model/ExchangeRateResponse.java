@@ -12,7 +12,7 @@ import java.util.Map;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ExchangeRateListResponse {
+public class ExchangeRateResponse {
 
 	private Map<String, Double> exchangeRateList;
 

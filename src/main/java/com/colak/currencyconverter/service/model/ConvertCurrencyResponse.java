@@ -8,8 +8,10 @@ import lombok.Data;
  **/
 @AllArgsConstructor
 @Data
-public class ConvertQueryResponse {
+public class ConvertCurrencyResponse {
 
 	private Double result;
-
+	private String sourceCurrency;
+	private String toCurrency;
+	private String sourceAmount;
 }
