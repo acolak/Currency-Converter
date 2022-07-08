@@ -1,4 +1,4 @@
-package com.colak.currencyconverter.service.fixer;
+package com.colak.currencyconverter.service.rate.fixer;
 
 import com.colak.currencyconverter.exception.ErrorBody;
 import com.colak.currencyconverter.exception.FixerApiException;
