@@ -36,16 +36,16 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(FixerApiException.class)
 	public ResponseEntity<ErrorBody> handleFixerApiException(FixerApiException exception) {
 		HttpStatus responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		ErrorBody errorBody = exception.getErrorBody();
-		log.error(errorBody.toString());
+		ErrorBody errorBody = new ErrorBody(exception.getErrorCode(), exception.getErrorMessage());
+		log.error(exception.getErrorCode() + "-" + exception.getErrorMessage());
 		return new ResponseEntity<>(errorBody, responseStatus);
 	}
 
 	@ExceptionHandler(RepositoryException.class)
 	public ResponseEntity<ErrorBody> handleRepositoryException(RepositoryException exception) {
 		HttpStatus responseStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		ErrorBody errorBody = exception.getErrorBody();
-		log.error(errorBody.toString());
+		ErrorBody errorBody = new ErrorBody(exception.getErrorCode(), exception.getErrorMessage());
+		log.error(exception.getErrorCode() + "-" + exception.getErrorMessage());
 		return new ResponseEntity<>(errorBody, responseStatus);
 	}
 

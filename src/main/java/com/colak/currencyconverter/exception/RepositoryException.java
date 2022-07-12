@@ -14,6 +14,12 @@ import lombok.NoArgsConstructor;
 public class RepositoryException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
-	private ErrorBody errorBody;
+	private Integer errorCode;
+	private String errorMessage;
+
+	public RepositoryException(Integer errorCode, String errorMessage, Throwable cause) {
+		super(errorMessage, cause);
+		this.errorCode = errorCode;
+	}
 
 }

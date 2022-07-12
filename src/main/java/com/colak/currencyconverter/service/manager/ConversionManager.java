@@ -1,7 +1,7 @@
 package com.colak.currencyconverter.service.manager;
 
+import com.colak.currencyconverter.constant.ErrorCodes;
 import com.colak.currencyconverter.controller.dto.ConvertCurrencyResponseDTO;
-import com.colak.currencyconverter.exception.ErrorBody;
 import com.colak.currencyconverter.exception.RepositoryException;
 import com.colak.currencyconverter.mapper.ConversionCurrencyMapper;
 import com.colak.currencyconverter.repository.ConversionHistoryRepository;
@@ -57,7 +57,7 @@ public class ConversionManager {
 
 			conversionHistoryRepository.save(conversionHistoryBuilder.build());
 		} catch (Exception e) {
-			throw new RepositoryException(new ErrorBody(101, e.getMessage()));
+			throw new RepositoryException(ErrorCodes.UNKNOWN_ERROR_ON_REPOSITORY, String.format("Error occurred when saveConversionHistory transaction, transactionId:%s. Message: %s", transactionId, e.getMessage()), e);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class ConversionManager {
 				return conversionHistoryRepository.findAll();
 			}
 		} catch (Exception e) {
-			throw new RepositoryException(new ErrorBody(101, e.getMessage()));
+			throw new RepositoryException(ErrorCodes.UNKNOWN_ERROR_ON_REPOSITORY, String.format("Error occurred when getConversionHistory transaction, transactionId:%s. Message: %s", transactionId, e.getMessage()), e);
 		}
 	}
 

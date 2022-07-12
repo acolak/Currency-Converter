@@ -13,10 +13,12 @@ import lombok.NoArgsConstructor;
 public class FixerApiException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	private ErrorBody errorBody;
+	private Integer errorCode;
+	private String errorMessage;
 
-	public FixerApiException(ErrorBody errorBody, Throwable cause) {
-		super(errorBody.getErrorDetail(), cause);
+	public FixerApiException(Integer errorCode, String errorMessage, Throwable cause) {
+		super(errorMessage, cause);
+		this.errorCode = errorCode;
 	}
 
 }

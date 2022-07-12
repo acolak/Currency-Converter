@@ -3,8 +3,9 @@ package com.colak.currencyconverter.service;
 import com.colak.currencyconverter.exception.FixerApiException;
 import com.colak.currencyconverter.service.client.RestClient;
 import com.colak.currencyconverter.service.config.TestConfig;
-import com.colak.currencyconverter.service.rate.fixer.FixerRateService;
+import com.colak.currencyconverter.service.model.ConvertCurrencyResponse;
 import com.colak.currencyconverter.service.model.ExchangeRateResponse;
+import com.colak.currencyconverter.service.rate.fixer.FixerRateService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,11 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.internal.matchers.Any;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -33,7 +31,6 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -112,6 +109,50 @@ public class FixerRateServiceTest extends TestConfig {
 		assertThatThrownBy(() -> fixerRateService.getExchangeRateList("EUR", targetList))
 				.isInstanceOf(FixerApiException.class)
 				.hasMessageContaining("Error occurred when getExchangeRateList transaction");
+	}
+
+
+	@Test
+	@DisplayName("Check for convertCurrency")
+	public void convertCurrency_When_Successfully() {
+
+		List<String> targetList = new ArrayList<>();
+		targetList.add("TRY");
+
+		Map bodyMap = new HashMap();
+		Double result  = 170.0;
+		bodyMap.put("result", result);
+		ResponseEntity<Map> entityResp = new ResponseEntity<>(bodyMap, HttpStatus.OK);
+
+		Mockito.when(restTemplate.exchange(
+				any(URI.class),
+				any(HttpMethod.class),
+				any(HttpEntity.class),
+				eq(Map.class))).thenReturn(entityResp);
+
+
+		ConvertCurrencyResponse convertCurrencyResponse = fixerRateService.convertCurrency("10", "EUR", "TRY");
+
+		assertNotNull(convertCurrencyResponse);
+		assertThat(convertCurrencyResponse.getResult().equals(170.0));
+	}
+
+
+	@Test
+	@DisplayName("Check for convertCurrency when Exception")
+	public void convertCurrency_When_Exception() {
+		List<String> targetList = new ArrayList<>();
+
+		Mockito.when(restTemplate.exchange(
+				any(URI.class),
+				any(HttpMethod.class),
+				any(HttpEntity.class),
+				eq(Map.class))).thenThrow(RestClientException.class);
+
+
+		assertThatThrownBy(() -> fixerRateService.convertCurrency("10", "EUR", "TRY"))
+				.isInstanceOf(FixerApiException.class)
+				.hasMessageContaining("Error occurred when convertCurrency transaction");
 	}
 
 }

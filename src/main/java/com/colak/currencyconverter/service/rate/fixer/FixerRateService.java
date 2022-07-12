@@ -1,6 +1,6 @@
 package com.colak.currencyconverter.service.rate.fixer;
 
-import com.colak.currencyconverter.exception.ErrorBody;
+import com.colak.currencyconverter.constant.ErrorCodes;
 import com.colak.currencyconverter.exception.FixerApiException;
 import com.colak.currencyconverter.service.client.RestClient;
 import com.colak.currencyconverter.service.model.ConvertCurrencyResponse;
@@ -39,7 +39,7 @@ public class FixerRateService implements RateProviderService {
 
 			return new ExchangeRateResponse(rates);
 		} catch (Exception e) {
-			throw new FixerApiException(new ErrorBody(100, String.format("Error occurred when getExchangeRateList transaction, Currency:%s. Message: %s", currency, e.getMessage())), e);
+			throw new FixerApiException(ErrorCodes.UNKNOWN_ERROR, String.format("Error occurred when getExchangeRateList transaction, Currency:%s. Message: %s", currency, e.getMessage()), e);
 		}
 	}
 
@@ -53,7 +53,8 @@ public class FixerRateService implements RateProviderService {
 
 			return new ConvertCurrencyResponse(result, sourceCurrency, targetCurrency, sourceAmount);
 		} catch (Exception e) {
-			throw new FixerApiException(new ErrorBody(100, e.getMessage()));
+			throw new FixerApiException(ErrorCodes.UNKNOWN_ERROR, String.format("Error occurred when convertCurrency transaction, Currency:%s. Message: %s", sourceCurrency, e.getMessage()), e);
+
 		}
 
 	}
