@@ -6,8 +6,6 @@ This project consist of simple Currency Converter project that have below featur
 - Viewing the currency exchange rate
 - Viewing the currency exchange rate history
 - Viewing the currency exchange rate history of specific date
-- Viewing the currency exchange rate history of specific date range
-- Viewing the currency exchange rate history of specific date range with specific currency
 
 ### TOOLS & TECH
 - Java 11
@@ -24,8 +22,9 @@ This project consist of simple Currency Converter project that have below featur
 - Junit 5, Mockito
 
 ### 1.1 How To Install
-##### Note: you should have installed docker. https://www.docker.com/products/docker-desktop
-##### Note2 : You should have minimum Java 11 version and Maven.
+### Prerequisites !
+##### 1. You should have installed docker. https://www.docker.com/products/docker-desktop
+##### 2. You should have minimum Java 11 version and Maven CLI.
 
 first clone or download project then
 
