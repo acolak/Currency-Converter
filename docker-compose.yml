@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   app:
-    container_name: CurrencyConverter_docker
+    container_name: currency-converter_docker
     image: acolak/currency-converter
     build: ./
     ports:
@@ -14,7 +14,7 @@ services:
       DATASOURCE_HOST: mongo-db
   mongo-db:
     image: mongo:latest
-    container_name: mongo-db-currency-converter
+    container_name: mongo-db
     restart: always
     ports:
       - "27017:27017"

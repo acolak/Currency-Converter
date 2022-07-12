@@ -12,7 +12,7 @@ This project consist of simple Currency Converter project that have below featur
 - Spring Boot 2.5.6
     - Spring Data MongoDB
     - Spring Data Rest
-    - Spring Data Web
+    - Spring Web
 - MongoDB
 - Docker
 - Mapstruct
