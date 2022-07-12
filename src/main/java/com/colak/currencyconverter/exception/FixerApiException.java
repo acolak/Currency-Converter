@@ -15,5 +15,8 @@ public class FixerApiException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	private ErrorBody errorBody;
 
+	public FixerApiException(ErrorBody errorBody, Throwable cause) {
+		super(errorBody.getErrorDetail(), cause);
+	}
 
 }
