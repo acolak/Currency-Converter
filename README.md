@@ -37,7 +37,7 @@ Run **runProject.sh** file in root directory
     
     > ./runProject.sh
 
-*You don't need to mongodb separately, docker file contains mongodb image, and it can set required settings as well.
+*You don't need to install mongodb separately, docker file contains mongodb image, and it can set required settings as well.
 
 Run tests
 ```

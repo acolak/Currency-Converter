@@ -12,9 +12,9 @@ services:
       - ahmet-test-network
     environment:
       DATASOURCE_HOST: mongo-db
-  mongo-db:
+  mongo-db-currency-converter:
     image: mongo:latest
-    container_name: mongo-db-currency-converter
+    container_name: mongo-db
     restart: always
     ports:
       - "27017:27017"
