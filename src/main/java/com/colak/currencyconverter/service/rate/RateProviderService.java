@@ -6,7 +6,7 @@ import com.colak.currencyconverter.service.model.ExchangeRateResponse;
 import java.util.List;
 
 /**
- * @author AhmetColak date 7.07.2022 Copyright © TurkcellTech
+ * @author AhmetColak date 7.07.2022
  **/
 public interface RateProviderService {
 
