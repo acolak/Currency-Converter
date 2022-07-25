@@ -13,7 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author AhmetColak date 7.07.2022
@@ -33,7 +32,7 @@ public class FixerRateService implements RateProviderService {
 
 		try {
 
-			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(fixerUrl + LATEST).queryParam("symbols", targetList.stream().collect(Collectors.joining(","))).queryParam("base", currency);
+			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(fixerUrl + LATEST).queryParam("symbols", String.join(",", targetList)).queryParam("base", currency);
 
 			Map<String, Double> rates = (Map<String, Double>) restClient.get(builder).get("rates");
 

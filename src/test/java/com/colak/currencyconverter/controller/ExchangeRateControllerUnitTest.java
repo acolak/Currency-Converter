@@ -1,20 +1,23 @@
 package com.colak.currencyconverter.controller;
 
+import com.colak.currencyconverter.mapper.ConversionHistoryMapper;
 import com.colak.currencyconverter.mapper.ExchangeRateResponseMapper;
+import com.colak.currencyconverter.service.manager.ConversionManager;
 import com.colak.currencyconverter.service.model.ExchangeRateResponse;
 import com.colak.currencyconverter.service.rate.RateProviderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author AhmetColak date 8.07.2022
  **/
 
-@SpringBootTest
+@WebMvcTest
 @AutoConfigureMockMvc
 public class ExchangeRateControllerUnitTest {
 
@@ -37,11 +40,23 @@ public class ExchangeRateControllerUnitTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Mock
+	@MockBean
 	private RateProviderService rateProviderService;
 
-	@Mock
+	@MockBean
+	private ConversionManager conversionManager;
+
+	@MockBean
 	private ExchangeRateResponseMapper exchangeRateResponseMapper;
+
+	@MockBean
+	private ConversionHistoryMapper conversionHistoryMapper;
+
+	@MockBean
+	private RestTemplateBuilder restTemplateBuilder;
+
+	@MockBean
+	private RestTemplate restTemplate;
 
 	@Test
 	@DisplayName("get-exchange-rate-list controller unit test")

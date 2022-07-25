@@ -1,5 +1,5 @@
 ## ExchangeAPI Project
-This project consist of simple Currency Converter project that have below features:
+This project consist of simple Currency Converter Project Uses FixerIO API that have below features:
 
 - Get Currency Exchange Rates
 - Convert Currency
@@ -24,7 +24,7 @@ This project consist of simple Currency Converter project that have below featur
 ### 1.1 How To Install
 ### Prerequisites !
 ##### 1. You should have installed docker. https://www.docker.com/products/docker-desktop
-##### 2. You should have minimum Java 11 version and Maven CLI.
+##### 2. You should have minimum Java 11
 
 first clone or download project then
 

@@ -49,5 +49,13 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorBody, responseStatus);
 	}
 
+	@ExceptionHandler(NoConversionHistoryRecordFoundException.class)
+	public ResponseEntity<ErrorBody> handleNoConversionHistoryRecordFoundException(NoConversionHistoryRecordFoundException exception) {
+		HttpStatus responseStatus = HttpStatus.OK;
+		ErrorBody errorBody = new ErrorBody(exception.getErrorCode(), exception.getErrorMessage());
+		log.error(exception.getErrorCode() + "-" + exception.getErrorMessage());
+		return new ResponseEntity<>(errorBody, responseStatus);
+	}
+
 
 }

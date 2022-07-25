@@ -2,6 +2,7 @@ package com.colak.currencyconverter.service.manager;
 
 import com.colak.currencyconverter.constant.ErrorCodes;
 import com.colak.currencyconverter.controller.dto.ConvertCurrencyResponseDTO;
+import com.colak.currencyconverter.exception.NoConversionHistoryRecordFoundException;
 import com.colak.currencyconverter.exception.RepositoryException;
 import com.colak.currencyconverter.mapper.ConversionCurrencyMapper;
 import com.colak.currencyconverter.repository.ConversionHistoryRepository;
@@ -67,9 +68,9 @@ public class ConversionManager {
 			if (transactionId != null) {
 				return conversionHistoryRepository.findAllByConversionHistoryId(transactionId);
 			} else if (startDate != null && endDate != null) {
-				return conversionHistoryRepository.findAllByCreateDateBetween(startDate, endDate).orElseGet(null);
+				return conversionHistoryRepository.findAllByCreateDateBetween(startDate, endDate).orElseThrow(new NoConversionHistoryRecordFoundException(ErrorCodes.NO_CONVERSION_HISTORY_RECORD_FOUND, String.format("No conversion history record found for transactionId:%s", transactionId)));
 			} else {
-				return conversionHistoryRepository.findAll();
+				throw new NoConversionHistoryRecordFoundException(ErrorCodes.UNKNOWN_ERROR_ON_REPOSITORY, "Please provide transactionId or startDate and endDate");
 			}
 		} catch (Exception e) {
 			throw new RepositoryException(ErrorCodes.UNKNOWN_ERROR_ON_REPOSITORY, String.format("Error occurred when getConversionHistory transaction, transactionId:%s. Message: %s", transactionId, e.getMessage()), e);
